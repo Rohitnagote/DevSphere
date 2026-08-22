@@ -1,0 +1,24 @@
+{
+  "name": "devsphere",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Rohitnagote/DevSphere#readme",
+  "bugs": {
+    "url": "https://github.com/Rohitnagote/DevSphere/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rohitnagote/DevSphere.git"
+  },
+  "license": "ISC",
+  "author": "rohit nagote",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev":"nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
