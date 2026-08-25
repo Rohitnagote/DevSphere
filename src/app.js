@@ -1,10 +1,10 @@
 const express = require('express');
 const connectDB = require("./config/database");
 const app = express();
-const user = require("./models/user");
+const User = require("./models/user");
 
 app.post('/signup', async (req, res) => {
-    const newuser = new user({
+    const newuser = new User({
        firstname: "aren",
        lastname: "yegar",
        email: "aren.yegar@example.com",
