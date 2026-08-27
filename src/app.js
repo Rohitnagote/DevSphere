@@ -60,11 +60,21 @@ app.delete('/user', async(req, res) => {
 
 
 // to update user by id
-app.patch('/user', async(req, res) => {
-    const userid = req.body.userid;
+app.patch('/user/:userid', async(req, res) => {
+    const userid = req.params?.userid;
     const data = req.body;
     try{
-        const user = await User.findByIdAndUpdate({_id : userid}, data);
+        const update_allowed = ["age", "gender", "about", "skills"];
+        const isvalidupdate = Object.keys(data).every((key) => update_allowed.includes(key));  // check if all keys in req.body are in the allowed to update 
+        if(!isvalidupdate){
+            throw new Error("Invalid update fields");
+        }
+
+        if(data?.skills.length > 10){
+            throw new Error("Skills should not be more than 10");
+        }
+
+        const user = await User.findByIdAndUpdate({_id : userid}, data,{runValidators: true});
         res.send("User updated successfully");
     }catch(err){
         res.send("error occured"+ err.message);
