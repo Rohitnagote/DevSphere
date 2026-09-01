@@ -1,10 +1,15 @@
 //this file is for authentication routes
 
 const express = require('express');
-const authrouter = express.Router();
+const authRouter = express.Router();
+const { validatesignupdata } = require("../utils/validation");
+const bcrypt = require('bcrypt');
+const User = require("../models/user");
 
 
-authrouter.post('/signup', async (req, res) => {
+
+
+authRouter.post('/signup', async (req, res) => {
     try{
     const { firstname, lastname, email, password } = req.body;
 
@@ -30,3 +35,30 @@ authrouter.post('/signup', async (req, res) => {
     }
 
 });
+
+authRouter.post('/login', async (req, res) => {
+    try{
+        const { email, password } = req.body;
+
+        const user = await User.findOne({email});
+        if(!user){
+            throw new Error("invalid credentials");
+        }
+        
+        const isvalid = await user.validatePassword(password);
+        if(isvalid){
+            // create a token using jwt module
+            const token = await user.getJWT();
+
+
+            res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600000)});
+            res.send("Login successful");
+        }else{
+            throw new Error("Invalid credentials");
+        }
+    }catch(err){
+        res.send("error occured"+ err.message);
+    }
+});
+
+module.exports = authRouter;

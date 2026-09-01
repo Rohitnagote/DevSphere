@@ -1,59 +1,30 @@
 const express = require('express');
 const connectDB = require("./config/database");
 const app = express();
-const User = require("./models/user");
-const { validatesignupdata } = require("./utils/validation");
-const bcrypt = require('bcrypt');
+
+
+
 const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
-const { userAuth } = require('./middleware/auth');
+
+
 
 app.use(cookieParser());
 app.use(express.json());
 
+const authRouter = require('./routes/auth');
+const profileRouter = require('./routes/profile');
+const requestRouter = require('./routes/request');
 
 
-app.post('/login', async (req, res) => {
-    try{
-        const { email, password } = req.body;
-
-        const user = await User.findOne({email});
-        if(!user){
-            throw new Error("invalid credentials");
-        }
-        
-        const isvalid = await user.validatePassword(password);
-        if(isvalid){
-            // create a token using jwt module
-            const token = await user.getJWT();
-
-
-            res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600000)});
-            res.send("Login successful");
-        }else{
-            throw new Error("Invalid credentials");
-        }
-    }catch(err){
-        res.send("error occured"+ err.message);
-    }
-});
-
-app.get('/profile', userAuth, async (req, res) => {
-  try{
-
-
-    const user = req.user;
-  
-    res.send(user);
-  }catch(err){
-    res.send("error occured"+ err.message);
-  }
-
-});
+/*express will go one by one and check if the route is present in any of the routers and if it is present then it will execute that route
+ and if not then it will go to the next router and check if the route is present in that router and so on. If the route is not present in any of the routers then it will return 404 error.*/
+app.use('/', authRouter);
+app.use('/', profileRouter);
+app.use('/', requestRouter);
 
 
 // to update user by id
-app.patch('/user/:userid', async(req, res) => {
+/*app.patch('/user/:userid', async(req, res) => {
     const userid = req.params?.userid;
     const data = req.body;
     try{
@@ -72,7 +43,7 @@ app.patch('/user/:userid', async(req, res) => {
     }catch(err){
         res.send("error occured"+ err.message);
     }   
-});
+});*/
 
 connectDB().then(() => {
     console.log("Database connected successfully");
