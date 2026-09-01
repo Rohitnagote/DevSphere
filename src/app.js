@@ -11,32 +11,7 @@ const { userAuth } = require('./middleware/auth');
 app.use(cookieParser());
 app.use(express.json());
 
-app.post('/signup', async (req, res) => {
-    try{
-    const { firstname, lastname, email, password } = req.body;
 
-    // validate the data
-    validatesignupdata(req);
-
-
-    //encrypt the password using bcrypt module
-
-    const passwordhash = await bcrypt.hash(password, 10);
-    const newuser = new User({
-        firstname,
-        lastname,
-        email,
-        password: passwordhash,
-    });
-
-
-    await newuser.save();
-    res.send("User created successfully");
-    }catch(err){
-        res.send("error occured"+ err.message);
-    }
-
-});
 
 app.post('/login', async (req, res) => {
     try{
@@ -74,48 +49,6 @@ app.get('/profile', userAuth, async (req, res) => {
     res.send("error occured"+ err.message);
   }
 
-});
-
-
-// to get user by email
-app.get('/user', async (req, res) => {
-    const useremail = req.body.email;
-    try{
-        const user = await User.find({email: useremail});
-        if(user.length==0){
-            res.send("User not found"+err.message);
-        }else{
-            res.send(user);
-        }
-    }catch(err){
-        res.send("error occured"+ err.message);
-    }
-
-});
-
-// to get all users
-app.get('/feed', async(req, res) => {
-    try{
-        const users = await User.find({});
-        res.send(users);
-    }catch(err){
-        res.send("error occured"+ err.message);
-    }
-});
-
-// to delete user by id
-app.delete('/user', async(req, res) => {
-    const userid = req.body.userid;
-    try{
-        const user = await User.findByIdAndDelete(userid);
-        if(!user){
-            res.send("User not found");
-        }else{
-            res.send("User deleted successfully");
-        }
-    }catch(err){
-        res.send("error occured"+ err.message);
-    }
 });
 
 
