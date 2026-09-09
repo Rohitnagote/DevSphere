@@ -16,7 +16,7 @@ const userschema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
+        unique: true, // it also takes care of indexing the email field for faster queries
         lowercase: true,
         trim: true,
         validate(value) {

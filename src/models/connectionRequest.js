@@ -26,6 +26,8 @@ const connectionRequestSchema = new mongoose.Schema({
 
 );
 
+connectionRequestSchema.index({ senderId: 1, receiverId: 1 });
+
 connectionRequestSchema.pre('save', function(next) {
     const connectionRequest = this;
   // Check if senderId and receiverId are the same
