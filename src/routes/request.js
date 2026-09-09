@@ -3,6 +3,7 @@ const express = require('express');
 const requestRouter = express.Router();
 const { userAuth } = require('../middleware/auth.js');
 const ConnectionRequest = require('../models/connectionRequest.js');
+const User = require('../models/user.js');
 
 requestRouter.post('/request/send/:status/:receiverId', userAuth, async (req, res) =>{   // api for intrested or ignored connection request
     try{
@@ -14,6 +15,12 @@ requestRouter.post('/request/send/:status/:receiverId', userAuth, async (req, re
 
         if(!allowedStatus.includes(status)){
             return res.status(400).json({ message: "Invalid status type: " + status });
+        }
+
+
+        const receiverUser = await User.findById(receiverId);
+        if(!receiverUser){
+            return res.status(404).json({ message: "Receiver user not found" });
         }
 
 
