@@ -1,3 +1,4 @@
+
 const express = require('express');
 
 const requestRouter = express.Router();
@@ -78,7 +79,7 @@ requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, r
         res.status(500).json({ message: "Error occurred: " + err.message });
     }
  }
-); // api for accepting connection request
+);
         
 
 module.exports = requestRouter;
