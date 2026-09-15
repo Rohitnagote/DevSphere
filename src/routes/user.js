@@ -3,6 +3,8 @@ const userRouter = express.Router();
 const { userAuth } = require("../middleware/auth.js");
 const ConnectionRequest = require("../models/connectionRequest.js");
 
+
+
 //get all the pending connection requests for the logged in user
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
   try {
@@ -11,7 +13,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     const pendingRequests = await ConnectionRequest.find({
         receiverId: loggedInUser._id,
         status: "interested",
-    });
+    }).populate("senderId", "firstname lastname skills"); // Populate senderId with user details
 
     res.json({message: "Pending connection requests retrieved successfully", data: pendingRequests});
 
