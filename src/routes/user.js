@@ -2,6 +2,7 @@ const express = require("express");
 const userRouter = express.Router();
 const { userAuth } = require("../middleware/auth.js");
 const ConnectionRequest = require("../models/connectionRequest.js");
+const connectionRequestModel = require("../models/connectionRequest.js");
 
 
 
@@ -28,11 +29,11 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
   try{
     const loggedInUser = req.user;
 
-    const connectionRequests = await connectionRequestModel.find({
+    const connectionRequests = await ConnectionRequest.find({
       $or:[{ senderId: loggedInUser._id, status: "accepted"},
         { receiverId: loggedInUser._id, status: "accepted" }
       ]
-  }).populate("senderId", "firstname lastname skills").populate("receiverId", "firstname lastname skills");
+      }).populate("senderId", "firstname lastname skills").populate("receiverId", "firstname lastname skills");
   
   const data = connectionRequests.map((row) => {
     if (row.senderId._id.toString() === loggedInUser._id.toString()) {
