@@ -2,7 +2,7 @@ const express = require("express");
 const userRouter = express.Router();
 const { userAuth } = require("../middleware/auth.js");
 const ConnectionRequest = require("../models/connectionRequest.js");
-const connectionRequestModel = require("../models/connectionRequest.js");
+
 
 
 
