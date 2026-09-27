@@ -55,6 +55,12 @@ userRouter.get("/feed", userAuth, async (req, res) => {
   try{
     const loggedInUser = req.user;
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    limit = limit > 50 ? 50 : limit; // Limit the maximum number of users per page to 50
+    const skip = (page - 1) * limit;
+
     const connectionRequests = await ConnectionRequest.find({
       $or:[{ senderId: loggedInUser._id},
         { receiverId: loggedInUser._id },
@@ -74,13 +80,13 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         { _id: { $ne: loggedInUser._id } },  
 
           ],
-        }).select("firstname lastname skills");
+        }).select("firstname lastname skills").skip(skip).limit(limit);
 
      res.send(users);
       
 
   }catch(err){
-    res.status(500).json({ message: "Error occurred: " + err.message });
+    res.status(400).json({ message: "Error occurred: " + err.message });
   }
 });
 
