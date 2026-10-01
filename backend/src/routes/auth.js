@@ -11,29 +11,31 @@ const User = require("../models/user");
 
 authRouter.post('/signup', async (req, res) => {
     try{
-    const { firstname, lastname, email, password } = req.body;
+        validatesignupdata(req);
 
-    // validate the data
-    validatesignupdata(req);
+        const { firstname, lastname, email, password } = req.body;
+        const passwordhash = await bcrypt.hash(password, 10);
 
+        const newuser = new User({
+            firstname,
+            lastname,
+            email,
+            password: passwordhash,
+        });
+        const savedUser = await newuser.save();
 
-    //encrypt the password using bcrypt module
+        // log the new user in straight away
+        const token = await savedUser.getJWT();
+        res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600000) });
 
-    const passwordhash = await bcrypt.hash(password, 10);
-    const newuser = new User({
-        firstname,
-        lastname,
-        email,
-        password: passwordhash,
-    });
-
-
-    await newuser.save();
-    res.send("User created successfully");
+        savedUser.password = undefined;
+        res.status(201).send({ message: "Signup successful", user: savedUser });
     }catch(err){
-        res.send("error occured"+ err.message);
+        if(err.code === 11000){
+            return res.status(400).send("This email is already registered");
+        }
+        res.status(400).send(err.message);
     }
-
 });
 
 authRouter.post('/login', async (req, res) => {
@@ -67,7 +69,7 @@ authRouter.post('/logout', async (req, res) => {
         res.cookie("token",null , { expires: new Date(Date.now())});
         res.send("Logout successful");
     }catch(err){
-        res.send("error occured"+ err.message);
+        res.status(400).send("error occured"+ err.message);
     }
 });
 
