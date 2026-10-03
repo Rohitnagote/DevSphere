@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const rules = [
   { label: "At least 8 characters", test: (p) => p.length >= 8 },
@@ -19,6 +21,7 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
     const handleSignup = async () => {
     if (firstname.trim().length < 3) {
@@ -28,11 +31,12 @@ const Signup = () => {
     try {
       setLoading(true);
       setError("");
-      await axios.post(
+      const res = await axios.post(
         BASE_URL + "/signup",
         { firstname, lastname, email, password },
         { withCredentials: true }
       );
+      dispatch(addUser(res.data.user));
       navigate("/feed");
     } catch (err) {
       setError(err.response?.data || "Something went wrong");

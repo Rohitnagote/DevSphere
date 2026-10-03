@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -17,7 +22,8 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-      console.log(res.data.user);
+      dispatch(addUser(res.data.user));
+      navigate("/feed");
     } catch (err) {
       setError(err.response?.data || "Something went wrong");
     } finally {
@@ -69,6 +75,13 @@ const Login = () => {
               "Log in"
             )}
           </button>
+
+          <p className="text-center text-sm mt-2">
+            New here?{" "}
+            <Link to="/signup" className="text-primary font-medium">
+              Create an account
+            </Link>
+          </p>
         </div>
       </div>
     </div>
