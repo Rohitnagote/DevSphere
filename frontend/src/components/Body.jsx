@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
+import NavBar from "./NavBar.jsx";
 
 const Body = () => {
   const user = useSelector((store) => store.user);
@@ -38,7 +39,12 @@ const Body = () => {
     );
   }
 
-  return <Outlet />;
+    return (
+    <>
+      <NavBar />
+      <Outlet />
+    </>
+  );
 };
 
 export default Body;

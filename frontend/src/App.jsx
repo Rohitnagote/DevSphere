@@ -4,10 +4,12 @@ import Login from "./components/Login.jsx";
 import Signup from "./components/Signup.jsx";
 import Body from "./components/Body.jsx";
 import Feed from "./components/Feed.jsx";
+import Toast from "./components/Toast.jsx";
 
 function App() {
   return (
     <BrowserRouter>
+      <Toast />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

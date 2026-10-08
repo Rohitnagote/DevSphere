@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
+import { showToast } from "../utils/toastSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,9 @@ const Login = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data.user));
+      dispatch(
+        showToast({ message: `Welcome back, ${res.data.user.firstname}`, type: "success" })
+      );
       navigate("/feed");
     } catch (err) {
       setError(err.response?.data || "Something went wrong");

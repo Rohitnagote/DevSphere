@@ -4,6 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { showToast } from "../utils/toastSlice";
 
 const rules = [
   { label: "At least 8 characters", test: (p) => p.length >= 8 },
@@ -37,6 +38,9 @@ const Signup = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data.user));
+      dispatch(
+        showToast({ message: "Account created. Welcome to DevSphere!", type: "success" })
+      );
       navigate("/feed");
     } catch (err) {
       setError(err.response?.data || "Something went wrong");

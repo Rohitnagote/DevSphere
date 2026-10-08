@@ -4,7 +4,7 @@ const Feed = () => {
   const user = useSelector((store) => store.user);
 
   return (
-    <div className="min-h-screen bg-base-200 flex justify-center items-center">
+    <div className="min-h-[calc(100vh-5rem)] bg-base-200 flex justify-center items-center">
       <h1 className="font-display text-3xl font-extrabold">
         Hello, {user?.firstname}
       </h1>
