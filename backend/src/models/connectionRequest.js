@@ -29,14 +29,12 @@ const connectionRequestSchema = new mongoose.Schema({
 
 connectionRequestSchema.index({ senderId: 1, receiverId: 1 });
 
-connectionRequestSchema.pre('save', function(next) {
+connectionRequestSchema.pre('save', function () {
     const connectionRequest = this;
-  // Check if senderId and receiverId are the same
+    // Check if senderId and receiverId are the same
     if (connectionRequest.senderId.equals(connectionRequest.receiverId)) {
         throw new Error("Sender and receiver cannot be the same user");
-        
     }
-    next();
 });
 
 const ConnectionRequest = new mongoose.model('ConnectionRequest', connectionRequestSchema);

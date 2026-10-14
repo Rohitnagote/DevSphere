@@ -56,35 +56,27 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     const loggedInUser = req.user;
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
-    limit = limit > 50 ? 50 : limit; // Limit the maximum number of users per page to 50
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 50 ? 50 : limit;
     const skip = (page - 1) * limit;
 
     const connectionRequests = await ConnectionRequest.find({
-      $or:[{ senderId: loggedInUser._id},
-        { receiverId: loggedInUser._id },
-       ],
-      }).select("senderId receiverId");
-    
-    const hideuser = new Set();
-    connectionRequests.forEach((req) => {  
-      hideuser.add(req.senderId.toString());
-      hideuser.add(req.receiverId.toString());
+      $or: [{ senderId: loggedInUser._id }, { receiverId: loggedInUser._id }],
+    }).select("senderId receiverId");
+
+    const hideUsers = new Set();
+    connectionRequests.forEach((request) => {
+      hideUsers.add(request.senderId.toString());
+      hideUsers.add(request.receiverId.toString());
     });
+    hideUsers.add(loggedInUser._id.toString());
 
+    const users = await User.find({ _id: { $nin: Array.from(hideUsers) } })
+      .select("firstname lastname skills")
+      .skip(skip)
+      .limit(limit);
 
-    const users = await User.find({
-      $and:[
-        { _id: { $nin: Array.from(hideuser) } },
-        { _id: { $ne: loggedInUser._id } },  
-
-          ],
-        }).select("firstname lastname skills").skip(skip).limit(limit);
-
-     res.send(users);
-      
-
+    res.send(users);
   }catch(err){
     res.status(400).json({ message: "Error occurred: " + err.message });
   }

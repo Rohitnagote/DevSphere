@@ -146,3 +146,67 @@ html {
   from { opacity: 0; transform: translateY(-12px) scale(0.96); }
   to { opacity: 1; transform: none; }
 }
+
+/* ---------- Orbit feed ---------- */
+
+.orbit-stage {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.orbit-ring {
+  position: absolute;
+  border: 1.5px dashed #cfcaea;
+  border-radius: 50%;
+  animation: orbit linear infinite;
+}
+.orbit-arm {
+  position: absolute;
+  inset: 0;
+}
+.orbit-pos {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+.orbit-planet {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.orbit-av {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: orbit linear infinite;
+}
+.orbit-stage:hover .orbit-ring,
+.orbit-stage:hover .orbit-av {
+  animation-play-state: paused;
+}
+@media (max-width: 780px) {
+  .orbit-planet {
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+  }
+}
+
+.orbit-ring,
+.orbit-arm,
+.orbit-pos {
+  pointer-events: none;
+}
+.orbit-planet {
+  pointer-events: auto;
+}
