@@ -52,7 +52,7 @@ requestRouter.post('/request/send/:status/:receiverId', userAuth, async (req, re
 
 requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, res) =>{  // for accepting or rejecting connection request
     try{
-        loggedInUser = req.user;
+        const loggedInUser = req.user;
         const{ status, requestId } = req.params;
 
         const allowedStatus = ["accepted", "rejected"];

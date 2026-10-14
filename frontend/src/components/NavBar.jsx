@@ -53,6 +53,7 @@ const NavBar = () => {
               className="dropdown-content menu bg-base-100 rounded-box z-30 mt-3 w-48 border border-base-300 p-2 shadow-lg"
             >
               <li><Link to="/feed">Feed</Link></li>
+              <li><Link to="/requests">Requests</Link></li>
               <li><button onClick={handleLogout}>Log out</button></li>
             </ul>
           </div>
