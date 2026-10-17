@@ -17,7 +17,7 @@ const Orbit = ({ me, devs, selectedId, sentIds, onSelect }) => {
 
   return (
     <div className="orbit-stage">
-      <div className="absolute left-1/2 top-1/2 z-10 grid h-[86px] w-[86px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-primary bg-primary/10">
+      <div className="absolute left-1/2 top-1/2 z-10 grid h-[86px] w-[86px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-primary bg-base-100 sun-glow">
         <Avatar variant={avatarVariant(me?.firstname)} className="h-16 w-16" />
         <span className="absolute -bottom-6 font-display text-sm font-extrabold text-primary">
           You

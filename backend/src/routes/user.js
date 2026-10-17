@@ -72,7 +72,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     hideUsers.add(loggedInUser._id.toString());
 
     const users = await User.find({ _id: { $nin: Array.from(hideUsers) } })
-      .select("firstname lastname skills")
+      .select("firstname lastname skills age gender about")
       .skip(skip)
       .limit(limit);
 
