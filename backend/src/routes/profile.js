@@ -1,11 +1,10 @@
-
 const express = require('express');
+const bcrypt = require('bcrypt');
+const validator = require('validator');
 const { validateEditProfileData } = require('../utils/validation.js');
+const { userAuth } = require('../middleware/auth.js');
 
 const profileRouter = express.Router();
-const { userAuth } = require('../middleware/auth.js');
-const User = require('../models/user.js');
-
 
 profileRouter.get('/profile/view', userAuth, async (req, res) => {
   try{
@@ -18,36 +17,52 @@ profileRouter.get('/profile/view', userAuth, async (req, res) => {
 });
 
 profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
-    try{
-       if(!validateEditProfileData(req)){
-            throw new Error("Invalid edit data");
-        }
-        const user = req.user;
+  try{
+    if(!validateEditProfileData(req)){
+      return res.status(400).send("Invalid edit data");
+    }
 
-        Object.keys(req.body).forEach((key) => {user[key] = req.body[key]});
+    const { skills } = req.body;
+    if(skills !== undefined && (!Array.isArray(skills) || skills.length > 10)){
+      return res.status(400).send("Skills must be a list of up to 10 items");
+    }
 
-        await user.save();
-        res.send(`${user.firstname} your profile updated successfully`);
-    }catch(err){
-        res.send("error occured"+ err.message);
-    } 
+    const user = req.user;
+    Object.keys(req.body).forEach((key) => { user[key] = req.body[key]; });
+    await user.save();
+
+    user.password = undefined;
+    res.send({ message: `${user.firstname}, your profile was updated`, user });
+  }catch(err){
+    res.status(400).send(err.message);
+  }
 });
-
 
 profileRouter.patch('/profile/password', userAuth, async (req, res) => {
-    try{
-        const user = req.user;
-        const { oldpassword, newpassword } = req.body;
-        const isvalid = await user.validatePassword(oldpassword);
-        if(!isvalid){
-            throw new Error("Invalid old password");
-        }
-        user.password = newpassword;
-        await user.save();
-        res.send(`${user.firstname} your password updated successfully`);
-    }catch(err){
-        res.send("error occured"+ err.message);
+  try{
+    const user = req.user;
+    const { oldpassword, newpassword } = req.body;
+
+    if(!oldpassword || !newpassword){
+      return res.status(400).send("Old and new password are required");
     }
+
+    const isvalid = await user.validatePassword(oldpassword);
+    if(!isvalid){
+      return res.status(400).send("Old password is incorrect");
+    }
+
+    if(!validator.isStrongPassword(newpassword)){
+      return res.status(400).send("Password is not strong enough");
+    }
+
+    user.password = await bcrypt.hash(newpassword, 10);
+    await user.save();
+
+    res.send({ message: "Password updated" });
+  }catch(err){
+    res.status(400).send(err.message);
+  }
 });
 
-module.exports = profileRouter;  
+module.exports = profileRouter;

@@ -52,6 +52,7 @@ const NavBar = () => {
               tabIndex={0}
               className="dropdown-content menu bg-base-100 rounded-box z-30 mt-3 w-48 border border-base-300 p-2 shadow-lg"
             >
+              <li><Link to="/profile">Profile</Link></li>
               <li><Link to="/feed">Feed</Link></li>
               <li><Link to="/requests">Requests</Link></li>
               <li><Link to="/connections">Connections</Link></li>
