@@ -20,7 +20,7 @@ const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const requestRouter = require('./routes/request');
 const userRouter = require('./routes/user');
-
+const projectRouter = require("./routes/project.js");
 
 
 /*express will go one by one and check if the route is present in any of the routers and if it is present then it will execute that route
@@ -29,7 +29,7 @@ app.use('/', authRouter);
 app.use('/', profileRouter);
 app.use('/', requestRouter);
 app.use('/', userRouter);
-
+app.use("/", projectRouter);
 
 
 connectDB().then(() => {
