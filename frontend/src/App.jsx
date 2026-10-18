@@ -7,6 +7,7 @@ import Feed from "./components/Feed.jsx";
 import Requests from "./components/Requests.jsx";
 import Connections from "./components/Connections.jsx";
 import Profile from "./components/Profile.jsx";
+import ProjectNew from "./components/ProjectNew.jsx";
 import Toast from "./components/Toast.jsx";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/requests" element={<Requests />} />
           <Route path="/connections" element={<Connections />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/projects/new" element={<ProjectNew />} />
         </Route>
       </Routes>
     </BrowserRouter>
