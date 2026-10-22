@@ -92,7 +92,7 @@ projectRouter.get('/project/requests/received', userAuth, async (req, res) => {
       status: 'pending',
     })
       .populate('userId', 'firstname lastname skills')
-      .populate('projectId', 'title');
+      .populate('projectId', 'title skillsNeeded');
 
     res.send({ message: 'Join requests', data: requests });
   } catch (err) {
