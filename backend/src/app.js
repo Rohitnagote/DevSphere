@@ -1,3 +1,13 @@
+require("dotenv").config();
+
+const requiredVars = ["MONGO_URI", "JWT_SECRET"];
+requiredVars.forEach((name) => {
+  if (!process.env[name]) {
+    console.error(`Missing ${name} in the .env file`);
+    process.exit(1);
+  }
+});
+
 const dns = require('dns');
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
@@ -12,7 +22,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend address
+    origin:process.env.CLIENT_URL, // frontend address
     credentials: true,               // allows cookies ( JWT token)
   })
 );
@@ -34,7 +44,7 @@ app.use("/", projectRouter);
 
 connectDB().then(() => {
     console.log("Database connected successfully");
-    app.listen(3000, () => {
+    app.listen(process.env.PORT || 3000, () => {
     console.log("Server is running on port 3000");
    });
 }).
