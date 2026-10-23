@@ -243,3 +243,71 @@ html {
 .match-fill {
   transition: width 0.6s ease;
 }
+/* ---------- Home page (Projects version) ---------- */
+
+.hm-sat {
+  transform-origin: 14px 14px;
+  animation: orbit 14s linear infinite;
+}
+.hm-float {
+  animation: hm-float 7s ease-in-out infinite;
+}
+@keyframes hm-float {
+  50% { translate: 0 -8px; }
+}
+.hm-toast {
+  animation: hm-toast 8s ease-in-out infinite;
+}
+@keyframes hm-toast {
+  0%, 8% { opacity: 0; transform: translateY(14px) scale(0.96); }
+  14%, 70% { opacity: 1; transform: none; }
+  78%, 100% { opacity: 0; transform: translateY(-6px); }
+}
+.hm-flip-a {
+  animation: hm-flip-a 5s ease-in-out infinite;
+}
+.hm-flip-b {
+  opacity: 0;
+  animation: hm-flip-b 5s ease-in-out infinite;
+}
+@keyframes hm-flip-a {
+  0%, 40% { opacity: 1; }
+  50%, 90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes hm-flip-b {
+  0%, 40% { opacity: 0; }
+  50%, 90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.hm-caret {
+  animation: hm-caret 1s steps(1) infinite;
+}
+@keyframes hm-caret {
+  50% { opacity: 0; }
+}
+.hm-core {
+  animation: hm-core 3s ease-in-out infinite;
+}
+@keyframes hm-core {
+  50% { box-shadow: 0 0 0 10px rgba(79, 70, 165, 0.15); }
+}
+.hm-spin {
+  animation: orbit 14s linear infinite;
+}
+.hm-spin-rev {
+  animation: orbit 9s linear infinite reverse;
+}
+.hm-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: hm-marquee 30s linear infinite;
+}
+@keyframes hm-marquee {
+  to { transform: translateX(-50%); }
+}
+.hm-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}

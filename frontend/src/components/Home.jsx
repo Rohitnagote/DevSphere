@@ -1,164 +1,308 @@
 import { Link } from "react-router-dom";
 import Avatar from "./Avatar.jsx";
-import Reveal from "./Reveal.jsx";
 
-const skills = [
+const SKILLS = [
   "React", "Node.js", "MongoDB", "Python", "Java", "TypeScript",
   "Django", "Go", "Flutter", "AWS", "Docker", "Next.js",
 ];
 
-const tile =
-  "h-full rounded-[26px] border border-base-300 bg-base-100 p-6 transition duration-300 hover:-translate-y-1 hover:shadow-xl";
+const TEAMS = [
+  { avatars: [1, 5], names: "Aman and Rahul", project: "Study Buddy", skills: "React, Node.js" },
+  { avatars: [3, 4, 2], names: "Neha, Karan and Isha", project: "DevLog CLI", skills: "Go, Docker" },
+  { avatars: [2], names: "Priya", project: "FitTrack", skills: "Flutter, Firebase", needs: true },
+];
 
-const Heart = ({ size = 24 }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} className="fill-white">
-    <path d="M12 21C5 16.500 2 13 2 9a5 5 0 0 1 10-1.500A5 5 0 0 1 22 9c0 4-3 7.500-10 12z" />
-  </svg>
+const Brand = () => (
+  <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
+    <svg viewBox="0 0 28 28" className="h-[26px] w-[26px]" aria-hidden="true">
+      <circle cx="14" cy="14" r="12" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="14" cy="14" r="4.5" className="fill-primary" />
+      <g className="hm-sat">
+        <circle cx="23" cy="8" r="2.6" className="fill-secondary" />
+      </g>
+    </svg>
+    DevSphere
+  </Link>
+);
+
+const Face = ({ v, size = "h-8 w-8", border = "border-base-200" }) => (
+  <Avatar variant={v} className={`${size} rounded-full border-2 ${border}`} />
 );
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-base-200 overflow-x-hidden">
-      {/* Floating navbar */}
-      <nav className="sticky top-3 z-20 mx-3 md:mx-auto mt-3 max-w-3xl flex items-center justify-between rounded-full border border-base-300 bg-white/80 backdrop-blur-md pl-5 pr-2 py-2 shadow-lg">
-        <div className="flex items-center gap-2 font-display text-xl font-extrabold">
-          <svg viewBox="0 0 28 28" className="w-6 h-6" aria-hidden="true">
-            <circle cx="14" cy="14" r="12" fill="none" stroke="currentColor" strokeWidth="2" />
-            <circle cx="14" cy="14" r="4.5" className="fill-primary" />
-            <g className="logo-dot">
-              <circle cx="23" cy="8" r="2.6" className="fill-secondary" />
-            </g>
-          </svg>
-          DevSphere
-        </div>
+    <div className="relative min-h-screen overflow-x-clip bg-base-200 px-4 text-base-content">
+      {/* soft colour blobs */}
+      <div className="pointer-events-none absolute -left-32 top-5 h-[420px] w-[420px] rounded-full bg-[#C9C3F5] opacity-55 blur-3xl"></div>
+      <div className="pointer-events-none absolute -right-24 top-40 h-[360px] w-[360px] rounded-full bg-[#FFD3DA] opacity-55 blur-3xl"></div>
+
+      {/* floating glass nav */}
+      <nav
+        className="sticky top-3 z-20 mx-auto mt-3.5 flex max-w-[780px] items-center justify-between rounded-full border border-base-300 bg-white/80 py-2 pl-5 pr-2 shadow-lg shadow-primary/10 backdrop-blur"
+        aria-label="Main"
+      >
+        <Brand />
         <div className="flex items-center gap-1 text-sm">
-          <a href="#how" className="hidden md:inline px-3 py-2 opacity-70">How it works</a>
-          <a href="#skills" className="hidden md:inline px-3 py-2 opacity-70">Skills</a>
-          <Link to="/login" className="btn btn-sm btn-outline rounded-full">Log in</Link>
+          <a href="#how" className="hidden rounded-full px-3 py-2 opacity-70 hover:opacity-100 md:inline">
+            How it works
+          </a>
+          <a href="#skills" className="hidden rounded-full px-3 py-2 opacity-70 hover:opacity-100 md:inline">
+            Skills
+          </a>
+          <Link to="/login" className="btn btn-sm rounded-full">Log in</Link>
           <Link to="/signup" className="btn btn-sm btn-primary rounded-full">Sign up</Link>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative text-center px-5 pt-16 pb-10">
-        <div className="pointer-events-none absolute -left-28 top-5 h-[420px] w-[420px] rounded-full bg-[#C9C3F5] opacity-60 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 top-36 h-[360px] w-[360px] rounded-full bg-[#FFD3DA] opacity-60 blur-3xl" />
-
-        <div className="relative">
-          <div className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-4 py-1.5 text-sm mb-5">
-            <span className="status-dot w-2 h-2 rounded-full bg-success"></span>
-            Now matching developers by stack
-          </div>
-
-          <h1 className="font-display font-extrabold leading-[0.96] tracking-tight text-5xl sm:text-7xl md:text-8xl max-w-4xl mx-auto mb-5">
-            Find your{" "}
-            <span className="relative text-primary whitespace-nowrap">
-              people
-              <svg viewBox="0 0 200 14" preserveAspectRatio="none" className="absolute left-0 -bottom-2 w-full h-3" aria-hidden="true">
-                <path d="M2 9c30-8 60-8 96-3s70 4 100-2" fill="none" stroke="#FF6B81" strokeWidth="4" strokeLinecap="round" />
-              </svg>
-            </span>{" "}
-            in code
-          </h1>
-
-          <p className="text-lg opacity-70 max-w-lg mx-auto mb-7">
-            Swipe through developers who share your stack. Send an interest, get
-            a match, and start building together.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link to="/signup" className="btn btn-primary btn-lg rounded-full">Get started, it's free</Link>
-            <Link to="/login" className="btn btn-outline btn-lg rounded-full">I have an account</Link>
-          </div>
-
-          <div className="flex items-center justify-center gap-3 mt-6 text-sm opacity-70">
-            <div className="flex" aria-hidden="true">
-              {[2, 4, 3, 5].map((v, i) => (
-                <Avatar key={v} variant={v} className={`w-9 h-9 border-2 border-base-200 ${i > 0 ? "-ml-2.5" : ""}`} />
-              ))}
+      <div className="relative mx-auto max-w-[1100px]">
+        {/* hero */}
+        <section className="grid items-center gap-6 pb-10 pt-12 lg:grid-cols-[1.05fr_.95fr] lg:pt-16">
+          <div>
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3.5 py-1.5 text-[13px] opacity-90">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-success"></span>
+              Projects are open for teammates
             </div>
-            Join developers building together
+            <h1 className="mb-5 font-display text-[clamp(42px,7.4vw,84px)] font-extrabold leading-[.96] tracking-tight">
+              Find your people.{" "}
+              <span className="relative whitespace-nowrap text-primary">
+                Start
+                <svg
+                  viewBox="0 0 200 14"
+                  preserveAspectRatio="none"
+                  className="absolute -bottom-2 left-0 h-3 w-full"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2 9c30-8 60-8 96-3s70 4 100-2"
+                    fill="none"
+                    stroke="#FF6B81"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>{" "}
+              the project.
+            </h1>
+            <p className="mb-6 max-w-[480px] text-lg opacity-70">
+              Meet developers who share your stack, post the idea you want to
+              build, and fill your team. Join someone else's project when it
+              needs your skills.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/signup" className="btn btn-primary btn-lg rounded-full">
+                Get started, it's free
+              </Link>
+              <Link to="/login" className="btn btn-lg rounded-full">
+                I have an account
+              </Link>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm opacity-70">
+              <div className="flex -space-x-2" aria-hidden="true">
+                {[2, 4, 3, 5].map((v) => (
+                  <Face key={v} v={v} size="h-8 w-8" />
+                ))}
+              </div>
+              Developers are forming teams right now
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Scrolling skills strip */}
-      <div id="skills" className="overflow-hidden border-y border-base-300 bg-base-100 py-3.5 my-5 marquee-mask" aria-hidden="true">
-        <div className="marquee-track">
-          {[...skills, ...skills].map((s, i) => (
-            <span key={i} className="whitespace-nowrap rounded-full bg-primary/10 text-primary font-medium text-sm px-4 py-1.5">
-              {s}
+          {/* floating project card demo */}
+          <div className="relative min-h-[440px]" aria-hidden="true">
+            <article className="hm-float absolute right-0 top-0 z-[1] w-[min(300px,80%)] rotate-[5deg] rounded-3xl border border-base-300 bg-base-100 p-4 shadow-xl shadow-primary/15">
+              <span className="badge badge-success badge-soft">Looking for teammates</span>
+              <h3 className="mb-1 mt-3 font-display text-2xl font-extrabold">DevLog CLI</h3>
+              <p className="text-sm opacity-70">
+                An open-source tool that turns git commits into a weekly changelog.
+              </p>
+              <div className="mt-3 flex gap-1">
+                <span className="badge badge-primary badge-soft">Go</span>
+                <span className="badge badge-primary badge-soft">Docker</span>
+              </div>
+            </article>
+
+            <article className="absolute left-1/2 top-7 z-[2] w-[min(340px,92%)] -translate-x-[46%] rounded-3xl border border-base-300 bg-base-100 p-4 shadow-xl shadow-primary/15">
+              <span className="badge badge-success badge-soft">Looking for teammates</span>
+              <h3 className="mb-1 mt-3 font-display text-2xl font-extrabold">Study Buddy</h3>
+              <p className="text-sm opacity-70">
+                A web app that matches students into study groups by subject.
+              </p>
+              <p className="mb-1.5 mt-3.5 text-[11px] font-semibold uppercase tracking-wider opacity-60">
+                Needs
+              </p>
+              <div className="flex flex-wrap gap-1">
+                <span className="badge badge-secondary badge-soft">React</span>
+                <span className="badge badge-primary badge-soft">Node.js</span>
+                <span className="badge badge-primary badge-soft">MongoDB</span>
+              </div>
+              <p className="mb-1.5 mt-3.5 text-[11px] font-semibold uppercase tracking-wider opacity-60">
+                Team
+              </p>
+              <div className="flex items-center justify-between text-sm opacity-80">
+                <div className="flex -space-x-2">
+                  <Face v={1} size="h-[30px] w-[30px]" border="border-base-100" />
+                  <Face v={2} size="h-[30px] w-[30px]" border="border-base-100" />
+                </div>
+                <span>2 of 4 spots filled</span>
+              </div>
+              <progress className="progress progress-primary my-3 w-full" value="50" max="100"></progress>
+              <div className="btn btn-primary w-full rounded-full">Join this project</div>
+            </article>
+
+            <div className="hm-toast absolute bottom-5 left-0 z-[3] flex items-center gap-2.5 rounded-2xl bg-neutral py-2.5 pl-2.5 pr-4 text-sm text-neutral-content shadow-xl">
+              <Face v={3} size="h-[30px] w-[30px]" border="border-transparent" />
+              <span>
+                <b>Neha</b> joined Study Buddy
+              </span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* skills strip */}
+      <div
+        id="skills"
+        className="hm-fade relative -mx-4 mb-10 mt-2 overflow-hidden border-y border-base-300 bg-base-100 py-3.5"
+        aria-hidden="true"
+      >
+        <div className="hm-track">
+          {[...SKILLS, ...SKILLS].map((skill, i) => (
+            <span
+              key={i}
+              className="whitespace-nowrap rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
+            >
+              {skill}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Bento grid */}
-      <section id="how" className="max-w-6xl mx-auto px-5 pt-6 pb-12 grid gap-4 md:grid-cols-4 md:auto-rows-[minmax(150px,auto)]">
-        <Reveal className="md:col-span-2 md:row-span-2">
-          <div className={`${tile} bg-primary/10! flex flex-col`}>
-            <h3 className="font-display text-2xl font-extrabold mb-1">Swipe, don't scroll</h3>
-            <p className="opacity-70">One developer at a time. Interested or Ignore.</p>
-            <div className="relative flex-1 min-h-[250px] flex items-center justify-center" aria-hidden="true">
-              <div className="pc pc-back">
-                <Avatar variant={3} className="w-16 h-16 mx-auto mb-1.5" />
-                <p className="font-display text-lg font-extrabold">Neha Rao</p>
-                <p className="text-xs opacity-70">Python, Django</p>
+      {/* how it works */}
+      <div id="how" className="relative mx-auto max-w-[1100px] pb-12">
+        <div className="mb-5">
+          <h2 className="max-w-[620px] font-display text-[clamp(28px,4.4vw,44px)] font-extrabold leading-[1.02] tracking-tight">
+            From a rough idea to a working team
+          </h2>
+          <p className="mt-2 max-w-[400px] text-[15px] opacity-70">
+            Everything happens in DevSphere, from posting the idea to seeing
+            who joined.
+          </p>
+        </div>
+
+        <section className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+          {/* post */}
+          <div className="rounded-[26px] border border-base-300 bg-primary/10 p-5 transition-transform hover:-translate-y-1 hover:shadow-lg sm:col-span-2 lg:row-span-2">
+            <h3 className="font-display text-[22px] font-extrabold">Post your project idea</h3>
+            <p className="text-[15px] opacity-70">
+              Say what you're building and which skills you need. It takes a minute.
+            </p>
+            <div className="mt-4 rounded-2xl border border-base-300 bg-base-100 p-4" aria-hidden="true">
+              <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider opacity-60">Project name</p>
+              <div className="flex items-center rounded-lg border border-base-300 bg-base-200 px-3 py-2 font-medium">
+                Study Buddy
+                <span className="hm-caret ml-0.5 inline-block h-[18px] w-0.5 bg-primary"></span>
               </div>
-              <div className="pc pc-top">
-                <Avatar variant={1} className="w-16 h-16 mx-auto mb-1.5" />
-                <p className="font-display text-lg font-extrabold">Aman Sharma</p>
-                <p className="text-xs opacity-70 mb-2">Full stack, loves Node.js</p>
-                <span className="badge badge-soft badge-primary mr-1">React</span>
-                <span className="badge badge-soft badge-primary">Node.js</span>
+              <p className="mb-1.5 mt-3.5 text-[11px] font-semibold uppercase tracking-wider opacity-60">Skills needed</p>
+              <div className="flex flex-wrap gap-1">
+                <span className="badge badge-primary badge-soft">React</span>
+                <span className="badge badge-primary badge-soft">Node.js</span>
+                <span className="badge badge-primary badge-soft">MongoDB</span>
+                <span className="badge badge-outline border-dashed opacity-70">+ Add skill</span>
               </div>
-              <div className="heart-pop"><Heart /></div>
+              <p className="mb-1.5 mt-3.5 text-[11px] font-semibold uppercase tracking-wider opacity-60">Status</p>
+              <span className="badge badge-success badge-soft">Looking for teammates</span>
+              <div className="btn btn-primary mt-3.5 w-full rounded-full">Post project</div>
             </div>
           </div>
-        </Reveal>
 
-        <Reveal className="md:col-span-2" delay={80}>
-          <div className={tile}>
-            <h3 className="font-display text-2xl font-extrabold mb-1">It's a match</h3>
-            <p className="opacity-70">When interest is returned, you become connections.</p>
-            <div className="flex items-center mt-4" aria-hidden="true">
-              <Avatar variant={2} className="w-14 h-14 border-[3px] border-base-100" />
-              <span className="beat -ml-2.5 z-10 grid place-items-center w-9 h-9 rounded-full bg-secondary border-[3px] border-base-100">
-                <Heart size={16} />
+          {/* ranked */}
+          <div className="rounded-[26px] border border-base-300 bg-base-100 p-5 transition-transform hover:-translate-y-1 hover:shadow-lg">
+            <h3 className="font-display text-[22px] font-extrabold">Ranked by your stack</h3>
+            <p className="text-[15px] opacity-70">Projects that need your skills come first.</p>
+            <div className="mt-3.5 rounded-2xl border border-base-300 bg-base-200 p-3" aria-hidden="true">
+              <span className="badge badge-secondary badge-soft">Needs your React</span>
+              <b className="block font-display text-base">Study Buddy</b>
+              <small className="text-[13px] opacity-70">3 of 3 skills match</small>
+            </div>
+          </div>
+
+          {/* join */}
+          <div className="rounded-[26px] border border-primary bg-primary p-5 text-primary-content transition-transform hover:-translate-y-1 hover:shadow-lg">
+            <h3 className="font-display text-[22px] font-extrabold">Join in one tap</h3>
+            <p className="text-[15px] opacity-80">The owner reviews your request.</p>
+            <div className="relative mt-4 h-11 rounded-full bg-white text-[15px] font-semibold text-neutral" aria-hidden="true">
+              <span className="hm-flip-a absolute inset-0 flex items-center justify-center">Request to join</span>
+              <span className="hm-flip-b absolute inset-0 flex items-center justify-center gap-2 text-success">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12.5l4.5 4.5L19 7.5" />
+                </svg>
+                Accepted
               </span>
-              <Avatar variant={5} className="-ml-2.5 w-14 h-14 border-[3px] border-base-100" />
             </div>
           </div>
-        </Reveal>
 
-        <Reveal delay={160}>
-          <div className={tile}>
-            <h3 className="font-display text-2xl font-extrabold mb-1">Stack first</h3>
-            <p className="opacity-70 mb-3">See skills before anything else.</p>
-            <span className="badge badge-soft badge-primary mr-1">React</span>
-            <span className="badge badge-soft badge-primary mr-1">Go</span>
-            <span className="badge badge-soft badge-primary">AWS</span>
+          {/* orbit */}
+          <div className="flex items-center gap-5 rounded-[26px] border border-base-300 bg-base-100 p-5 transition-transform hover:-translate-y-1 hover:shadow-lg max-sm:flex-col max-sm:items-start sm:col-span-2">
+            <div className="relative h-[132px] w-[132px] shrink-0" aria-hidden="true">
+              <div className="absolute inset-0 rounded-full border-[1.5px] border-dashed border-base-300"></div>
+              <div className="absolute inset-[30px] rounded-full border-[1.5px] border-dashed border-base-300"></div>
+              <div className="hm-core absolute inset-[50px] rounded-full bg-primary"></div>
+              <div className="hm-spin absolute inset-0">
+                <i className="absolute -top-2 left-[calc(50%-8px)] h-4 w-4 rounded-full border-2 border-base-100 bg-secondary"></i>
+              </div>
+              <div className="hm-spin-rev absolute inset-[30px]">
+                <i className="absolute -top-2 left-[calc(50%-8px)] h-4 w-4 rounded-full border-2 border-base-100 bg-success"></i>
+              </div>
+            </div>
+            <div>
+              <h3 className="font-display text-[22px] font-extrabold">Still find people first</h3>
+              <p className="text-[15px] opacity-70">
+                The orbit shows developers by shared skills. Send a request,
+                then invite them to your project.
+              </p>
+            </div>
           </div>
-        </Reveal>
 
-        <Reveal delay={240}>
-          <div className={`${tile} bg-primary! border-primary! text-white`}>
-            <p className="font-display text-5xl font-extrabold tracking-tight">1:1</p>
-            <p className="opacity-80">Real connections, no endless feed.</p>
+          {/* teams on the feed */}
+          <div className="rounded-[26px] border border-base-300 bg-base-100 p-5 transition-transform hover:-translate-y-1 hover:shadow-lg sm:col-span-2 lg:col-span-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <h3 className="font-display text-[22px] font-extrabold">Teams show up on the feed</h3>
+              <span className="badge badge-success badge-soft">Live example</span>
+            </div>
+            <p className="text-[15px] opacity-70">
+              See who is building what, and jump in when a team needs you.
+            </p>
+            <div className="mt-4 grid gap-3 lg:grid-cols-3" aria-hidden="true">
+              {TEAMS.map((team) => (
+                <div
+                  key={team.project}
+                  className="flex items-center gap-3 rounded-2xl border border-base-300 bg-base-200 p-3.5"
+                >
+                  <div className="flex -space-x-2">
+                    {team.avatars.map((v) => (
+                      <Face key={v} v={v} size="h-8 w-8" border="border-base-200" />
+                    ))}
+                  </div>
+                  <p className="min-w-0 text-sm leading-snug">
+                    <b>{team.names}</b>{" "}
+                    {team.needs ? "needs a developer for" : "are building"} {team.project}
+                    <small className="block text-xs opacity-60">{team.skills}</small>
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </Reveal>
 
-        <Reveal className="md:col-span-4">
-          <div className={`${tile} bg-neutral! border-neutral! text-neutral-content flex flex-wrap items-center justify-between gap-4 p-8!`}>
-            <h3 className="font-display text-3xl font-extrabold max-w-xl">
-              Ready to meet your next collaborator?
+          {/* call to action */}
+          <div className="flex flex-wrap items-center justify-between gap-5 rounded-[26px] border border-neutral bg-neutral p-8 text-neutral-content sm:col-span-2 lg:col-span-4">
+            <h3 className="max-w-[580px] font-display text-[clamp(24px,4vw,36px)] font-extrabold leading-tight">
+              Ready to start your next project with the right people?
             </h3>
-            <Link to="/signup" className="btn btn-lg rounded-full bg-white text-neutral border-white">
+            <Link to="/signup" className="btn btn-lg rounded-full border-white bg-white text-neutral">
               Create your profile
             </Link>
           </div>
-        </Reveal>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };
